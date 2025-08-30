@@ -111,6 +111,29 @@ class CoinsuranceGUI(QMainWindow):
         self.premium_receivable_button = QPushButton("Premium receivable")
         self.premium_receivable_button.clicked.connect(self.premium_receivable)
         layout.addWidget(self.premium_receivable_button)
+        self.company_list.setStyleSheet("""
+            QListWidget {
+                background-color: #f9f9f9;
+                border: 1px solid #ccc;
+                padding: 5px;
+                font-size: 14px;
+            }
+            QListWidget::item {
+                padding: 6px;
+                margin: 2px 0;
+            }
+            QListWidget::item:selected {
+                background: #d0eaff;
+                color: black;
+            }
+            QCheckBox {
+                spacing: 8px;
+            }
+            QCheckBox::indicator {
+                width: 20px;
+                height: 20px;
+            }
+        """)
 
     # ---- Methods ----
     def show_version(self):
@@ -174,7 +197,6 @@ class CoinsuranceGUI(QMainWindow):
                 self, "Message", f"Claim data files selected: {len(files)}"
             )
 
-
     def update_company_list(self):
         # collect companies from both files
         companies = set()
@@ -227,7 +249,6 @@ class CoinsuranceGUI(QMainWindow):
                 "Message",
                 f"Reports generated for: {', '.join(selected_companies)}",
             )
-
 
     def generate_summary(self):
         file, _ = QFileDialog.getOpenFileName(
