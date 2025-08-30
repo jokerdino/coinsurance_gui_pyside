@@ -78,6 +78,10 @@ class CoinsuranceGUI(QMainWindow):
         row.addStretch()  # push right
         layout.addLayout(row)
 
+        self.select_all_button = QPushButton("Select all companies")
+        self.select_all_button.clicked.connect(self.toggle_select_all)
+        layout.addWidget(self.select_all_button)
+
         # Multi-select company list
         self.company_list = QListWidget()
         # self.company_list.setSelectionMode(QListWidget.MultiSelection)  # allow multiple
@@ -212,6 +216,25 @@ class CoinsuranceGUI(QMainWindow):
 
             item.setCheckState(Qt.Unchecked)  # optional: show checkboxes
             self.company_list.addItem(item)
+
+    def toggle_select_all(self):
+        all_checked = True
+        for i in range(self.company_list.count()):
+            item = self.company_list.item(i)
+            if item.checkState() != Qt.Checked:
+                all_checked = False
+                break
+
+        # If everything was checked, uncheck all; otherwise check all
+        for i in range(self.company_list.count()):
+            item = self.company_list.item(i)
+            item.setCheckState(Qt.Unchecked if all_checked else Qt.Checked)
+
+        # Update button text dynamically
+        if all_checked:
+            self.select_all_button.setText("Select All")
+        else:
+            self.select_all_button.setText("Deselect All")
 
     def generate_reports(self):
         selected_companies = []
