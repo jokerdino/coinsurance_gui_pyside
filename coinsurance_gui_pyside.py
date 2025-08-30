@@ -228,21 +228,21 @@ class CoinsuranceGUI(QMainWindow):
             self, "Enter folder name", "Enter folder name"
         )
         if ok and path_string_wip:
-            for company in selected_companies:
-                df_premium_selected = df_premium_file[
-                    df_premium_file["COMPANYNAME"] == company
-                ]
-                df_claim_selected = df_claim_file[
-                    df_claim_file["COMPANYNAME"] == company
-                ]
+            # filter premium & claims for only selected companies
+            df_premium_selected = df_premium_file[
+                df_premium_file["COMPANYNAME"].isin(selected_companies)
+            ]
+            df_claim_selected = df_claim_file[
+                df_claim_file["COMPANYNAME"].isin(selected_companies)
+            ]
 
-                merge_files(
-                    df_premium_selected,
-                    df_claim_selected,
-                    df_claim_data_file,
-                    path_string_wip,
-                    self.bool_hub.isChecked(),
-                )
+            merge_files(
+                df_premium_selected,
+                df_claim_selected,
+                df_claim_data_file,
+                path_string_wip,
+                self.bool_hub.isChecked(),
+            )
 
             QMessageBox.information(
                 self,
