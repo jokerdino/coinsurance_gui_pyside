@@ -150,7 +150,7 @@ class CoinsuranceGUI(QMainWindow):
         )
         if file:
             df_premium_file = pd.read_csv(
-                file, converters={"TXT_FOLLOWER_OFF_CD_CODE": str}
+                file, dtype={"TXT_FOLLOWER_OFF_CD_CODE": str}, engine="pyarrow"
             )
             # clean company names
             df_premium_file["COMPANYNAME"] = (
@@ -171,10 +171,11 @@ class CoinsuranceGUI(QMainWindow):
             dfs = [
                 pd.read_csv(
                     f,
-                    converters={
+                    dtype={
                         "TXT_LEADER_OFFICE_CODE": str,
                         "TXT_FOLLOWER_OFFICE_CODE": str,
                     },
+                    engine="pyarrow",
                 )
                 for f in files
             ]
@@ -195,7 +196,7 @@ class CoinsuranceGUI(QMainWindow):
             self, "Select Claims Data Files", "", "CSV Files (*.csv)"
         )
         if files:
-            dfs = [pd.read_csv(f, converters={"Office Code": str}) for f in files]
+            dfs = [pd.read_csv(f, dtype={"Office Code": str}, engine="pyarrow") for f in files]
             df_claim_data_file = pd.concat(dfs)
             QMessageBox.information(
                 self, "Message", f"Claim data files selected: {len(files)}"
